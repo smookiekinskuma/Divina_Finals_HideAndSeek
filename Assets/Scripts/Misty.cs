@@ -6,10 +6,15 @@ public class Misty : MonoBehaviour
 {
     [Header("Moving")]
     [SerializeField] private float move;
-    [SerializeField] private float moveX;
-    [SerializeField] private float moveY;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator anim;
+    [SerializeField] private bool flip;
+
+    [Header("Hiding")]
+    [SerializeField] public bool isHiding;
+
+    [Header("GameOver")]
+    [SerializeField] public GameObject gameOver;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +23,7 @@ public class Misty : MonoBehaviour
         anim = GetComponent<Animator>();
 
         move = 5f;
+        isHiding = false;
     }
 
     // Update is called once per frame
@@ -28,17 +34,21 @@ public class Misty : MonoBehaviour
 
     void Movement()
     {
-        moveX = Input.GetAxisRaw("Horizontal") * move;
-        moveY = Input.GetAxisRaw("Vertical") * move;
+        //Moving
+        float moveX = Input.GetAxisRaw("Horizontal") * move;
+        float moveY = Input.GetAxisRaw("Vertical") * move;
         rb.velocity = new Vector2(moveX, moveY);
+        
+        //Animation
+        if (moveX != 0 || moveY != 0)
+        { anim.GetComponent<Animator>().Play("Walking"); } 
+        else
+        { anim.GetComponent<Animator>().Play("Idle"); }
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
-        {
-            
-        } else
-        {
-
-        }
-
+        //Flip the character
+        if (moveX > 0 && !flip) 
+        { transform.Rotate(0f, 180f, 0f); flip = !flip; }
+        if (moveX < 0 && flip) 
+        { transform.Rotate(0f, 180f, 0f); flip = !flip; }
     }
 }
