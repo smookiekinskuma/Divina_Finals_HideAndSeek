@@ -29,9 +29,14 @@ public class Misty : MonoBehaviour
     [SerializeField] public int Checkpoint;
     [SerializeField] private Transform []CheckpointLocation;
 
+    [Header("Spawn")]
+    [SerializeField] private GameObject Stage1;
+    [SerializeField] private GameObject Stage2;
+    [SerializeField] private GameObject Stage3;
+
     // Start is called before the first frame update
     void Start()
-    { 
+    {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
@@ -49,6 +54,7 @@ public class Misty : MonoBehaviour
 
         Movement();
         Condition();
+        CheckpointMonsters();
     }
 
     void Condition()
@@ -91,6 +97,30 @@ public class Misty : MonoBehaviour
         }
     }
 
+    public void CheckpointMonsters()
+    {
+        switch (Checkpoint)
+        {
+            case 0: //First Stage
+                Stage1.SetActive(true);
+                Stage2.SetActive(false);
+                Stage3.SetActive(false);
+
+                break;
+            case 1: //Second Stage
+                Stage1.SetActive(false);
+                Stage2.SetActive(true);
+                Stage3.SetActive(false);
+
+                break;
+            case 2: //Third Stage
+                Stage1.SetActive(false);
+                Stage2.SetActive(false);
+                Stage3.SetActive(true);
+                break;
+        }
+    }
+
     public void RestartLevel()
     {
         Card.SetActive(false);
@@ -99,14 +129,25 @@ public class Misty : MonoBehaviour
             case 0: //First Stage
                 camera.transform.position = CheckpointLocation[0].transform.position;
                 transform.position = CheckpointLocation[0].transform.position;
+                Stage1.SetActive(true);
+                Stage2.SetActive(false);
+                Stage3.SetActive(false);
+
                 break;
             case 1: //Second Stage
                 camera.transform.position = CheckpointLocation[1].transform.position;
                 transform.position = CheckpointLocation[1].transform.position;
+                Stage1.SetActive(false);
+                Stage2.SetActive(true);
+                Stage3.SetActive(false);
+
                 break;
             case 2: //Third Stage
                 camera.transform.position = CheckpointLocation[2].transform.position;
                 transform.position = CheckpointLocation[2].transform.position;
+                Stage1.SetActive(false);
+                Stage2.SetActive(false);
+                Stage3.SetActive(true);
                 break;
         }
     }

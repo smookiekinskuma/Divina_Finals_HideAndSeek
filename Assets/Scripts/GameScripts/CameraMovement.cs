@@ -12,7 +12,7 @@ public class CameraMovement : MonoBehaviour
     void Start()
     {
         transform.position = misty.position;
-        speed = 30f;
+        speed = 20f;
         offset.z = -10f;
     }
 
